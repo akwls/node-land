@@ -54,7 +54,10 @@ var app = http.createServer(function(req, res) {
                 var title = queryData.id
                 var list = templateList(filelist)
                 fs.readFile(`data/${queryData.id}`, 'utf8', function(err, description) {
-                    var template = templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`)
+                    var template = templateHTML(title, list, 
+                        `<h2>${title}</h2>${description}`, 
+                        `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+                    );
                     res.writeHead(200);
                     res.end(template);
                 })
@@ -90,7 +93,27 @@ var app = http.createServer(function(req, res) {
                 res.end();
             })
         })
-    }
+    } else if(pathname == '/update') {
+        fs.readdir('./data', function(error, filelist) {
+            var title = queryData.id
+            var list = templateList(filelist)
+            fs.readFile(`data/${queryData.id}`, 'utf8', function(err, description) {
+                var template = templateHTML(title, list, 
+                    `
+                    <form action="http://localhost:3000/update_process" method="post">
+                        <input type="hidden" value="${title}" name="id" /> 
+                        <p><input type="text" name="title" value="${title}"/></p>
+                        <p><textarea name="description">${description}</textarea></p>
+                        <p><input type="submit" /></p>
+                    </form>
+                    `, 
+                    `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+                );
+                res.writeHead(200);
+                res.end(template);
+            })
+        })
+    } 
     else {
         res.writeHead(404);
         res.end('Not found');
