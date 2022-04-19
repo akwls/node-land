@@ -134,6 +134,19 @@ var app = http.createServer(function(req, res) {
                 })
             })
         })
+    } else if(pathname == '/delete_process') {
+        var body = '';
+        req.on('data', function(data) {
+            body = body + data;
+        });
+        req.on('end', function() {
+            var post = qs.parse(body)
+            var id = post.id;
+            fs.unlink(`data/${id}`, function(err) {
+                res.writeHead(302, {Location: `/`});
+                res.end();
+            })
+        })
     }
     else {
         res.writeHead(404);
