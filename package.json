@@ -5,7 +5,8 @@
   "main": "main.js",
   "dependencies": {
     "fs": "0.0.1-security",
-    "http": "0.0.1-security"
+    "http": "0.0.1-security",
+    "sanitize-html": "2.7.0"
   },
   "devDependencies": {},
   "scripts": {
